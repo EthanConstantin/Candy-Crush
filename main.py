@@ -1,19 +1,20 @@
 # Making the board
 import random
-grid = [
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    []
-]
 
 
 def new_random_grid():
     """Randomizing the 8 by 8 board that the user will play on"""
+    global grid
+    grid = [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+    ]
     for row in range(8):
         for col in range(8):
             grid[row].append(random.randint(1, 5))
@@ -47,8 +48,6 @@ def new_random_grid():
                     starting_match_check()
     starting_match_check()
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 # Presenting the board
 def show_grid():
@@ -62,15 +61,13 @@ def show_grid():
             print(letters[j], end="  |  ")
         print("\n   -------------------------------------------------")
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 # Checking if any matches have been made after the player moves
 def check_matches():
     matches_found = 0
     for row in range(len(grid)):
         for col in range(len(grid)):
-            """Replacing matches with with elements 3 tiles above it, to simulate falling"""
+            """Replacing matches with with elements 3 tiles above it, to simulate falling objects"""
             """print(row, col)"""
             if 1 <= row <= 6:
                 """Checks to see if the element has a duplicate to the left and right of it, making it a match"""
@@ -101,23 +98,22 @@ def check_matches():
     global score
     if times_ran == 0:
         score += matches_found
-    """Making sure none of the new random letters make a match"""
+    """Checking for matches with the new random letters"""
     if matches_found > 0:
         times_ran += 1
         check_matches()
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Swapping 2 letters
 def update_grid():
     """Asking for user's desired action"""
     """input for the co-ordinates of the letter the user wants to move"""
-    x = int(input("What is the column of the piece you want to move? ")) - 1
-    while x < 1 or x > 7:
-        x = int(input("There are only 8 columns on the board, make sure you choose a number between one and eight. "))
-    y = int(input("what is the row of the piece you want to move? ")) - 1
-    while y < 1 or y > 7:
-        y = int(input("There are only 8 rows on the board, make sure you choose a number between one and eight. "))
+    x = int(input("What is the column of the piece you want to move? "))-1
+    while x < 0 or x > 7:
+        x = int(input("There are only 8 columns on the board, make sure you choose a number between one and eight. "))-1
+    y = int(input("what is the row of the piece you want to move? "))-1
+    while y < 0 or y > 7:
+        y = int(input("There are only 8 rows on the board, make sure you choose a number between one and eight. "))-1
     swap_direction = input("what direction do you want to move the letter in? ").strip().lower()
     possible_swaps = ["up", "down", "left", "right"]
     """Checking if the swap direction is valid, and the user isn't trying to move a piece off the grid"""
@@ -136,8 +132,6 @@ def update_grid():
         grid[y][x + 1], grid[y][x] = grid[y][x], grid[y][x + 1]
     global moves
     moves += 1
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 # This is a function to actually run the game, and call all the other functions I've defined so far
@@ -159,7 +153,7 @@ def run_lvl(lvl):
         print(f"\nMoves: {moves} \nScore: {score} \nYou need to get {matches_needed - score} matches in "
               f"{moves_needed - moves} moves to win")
     if score >= matches_needed and moves >= moves_needed:
-        print("You just barely clutched that win! Good job!")
+        print("You just barely got that win! Good job!")
         return True
     else:
         if score >= matches_needed:
@@ -171,15 +165,15 @@ def run_lvl(lvl):
 
 
 # The first number is the matches you need to get in that level, and the second number is how many moves you have
-lvl1 = 7, 15
+lvl1 = 1, 15
 lvl2 = 8, 14
 lvl3 = 9, 10
 lvl4 = 8, 8
 lvl5 = 9, 7
 
 # Running the game
-print("Try and beat all 5 levels in this match 3 game in as few moves as you can.")
-if run_lvl(lvl1) and run_lvl(lvl2) and run_lvl(lvl3) and run_lvl(lvl4) and run_lvl(lvl5) == True:
+print("Try and beat all 6 levels in this match 3 game in as few moves as you can.")
+if run_lvl(lvl1) and run_lvl(lvl2) and run_lvl(lvl3) and run_lvl(lvl4) and run_lvl(lvl5):
     print("Congratulations! You beat the whole game!")
 else:
     print("Play again soon!")
